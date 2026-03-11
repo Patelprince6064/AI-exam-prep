@@ -4,7 +4,7 @@ import "./Auth.css";
 
 function Login() {
 
-  const navigate = useNavigate();   // ✅ correct place
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,23 +14,27 @@ function Login() {
     e.preventDefault();
 
     try {
-      const res = await fetch("/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ email, password })
-      });
+      const res = await fetch(
+        "https://ai-exam-prep-7yle.onrender.com/api/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ email, password })
+        }
+      );
 
       const data = await res.json();
 
       if (res.ok) {
-        navigate("/dashboard");   // redirect after login
+        navigate("/dashboard");
       } else {
         setMessage(data.message);
       }
 
     } catch (error) {
+      console.error(error);
       setMessage("Server error ❌");
     }
   };
