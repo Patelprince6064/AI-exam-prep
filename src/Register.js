@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./Auth.css";
 
 function Register() {
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -10,19 +11,35 @@ function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
 
+    setMessage("Registering...");
+
     try {
-      const res = await fetch("https://ai-exam-prep-7yle.onrender.com/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ name, email, password })
-      });
+
+      const res = await fetch(
+        "https://ai-exam-prep-7yle.onrender.com/api/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            password
+          })
+        }
+      );
 
       const data = await res.json();
-      setMessage(data.message);
+
+      if (res.ok) {
+        setMessage(data.message || "Registration successful ✅");
+      } else {
+        setMessage(data.message || "Registration failed ❌");
+      }
 
     } catch (error) {
+      console.error("Register error:", error);
       setMessage("Server error ❌");
     }
   };
