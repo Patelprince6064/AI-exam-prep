@@ -2,7 +2,6 @@ import React from "react";
 import "./Dashboard.css";
 import { Link } from "react-router-dom";
 import { HiOutlineLogout } from "react-icons/hi";
-import { MdLogout } from "react-icons/md";
 
 import {
   Chart as ChartJS,
@@ -82,9 +81,6 @@ function Dashboard() {
       <HiOutlineLogout /> Logout
     </Link>
 
-    <Link to="/login" className="logout-icon" title="Logout">
-      <MdLogout /> Logout
-    </Link>
   </nav>
 </div>
 
