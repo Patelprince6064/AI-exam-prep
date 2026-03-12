@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./home.css";
 import logo from "../assets/logo.png";
-
+<img src={logo} alt="logo" /> 
 
 const Home = () => {
   return (
