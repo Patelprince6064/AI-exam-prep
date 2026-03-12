@@ -77,7 +77,7 @@ function Dashboard() {
       <span>⚙</span> Settings
     </Link>
 
-    <Link to="/login" className="logout-icon">
+    <Link to="/login" className="menu-item">
       <HiOutlineLogout /> Logout
     </Link>
 
