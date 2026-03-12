@@ -16,7 +16,7 @@ function Register() {
     try {
 
       const res = await fetch(
-        "https://ai-exam-prep-7yle.onrender.com/api/register",
+        "https://ai-exam-prep-7y1e.onrender.com/api/register",
         {
           method: "POST",
           headers: {

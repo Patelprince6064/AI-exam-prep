@@ -16,17 +16,17 @@ function AIPractice() {
     try {
 
       const response = await fetch(
-  "https://ai-exam-prep-7yle.onrender.com/chat",
-  {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      message: input
-    })
-  }
-);
+        "https://ai-exam-prep-7y1e.onrender.com/chat",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            message: input
+          })
+        }
+      );
 
       const data = await response.json();
 

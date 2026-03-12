@@ -15,7 +15,7 @@ function Login() {
 
     try {
       const res = await fetch(
-        "https://ai-exam-prep-7yle.onrender.com/api/login",
+        "https://ai-exam-prep-7y1e.onrender.com/api/login",
         {
           method: "POST",
           headers: {
