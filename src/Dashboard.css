@@ -258,3 +258,13 @@ body{
   padding:8px 0;
   color:#f87171;
 }
+
+.logout-icon {
+  font-size: 22px;
+  color: white;
+  cursor: pointer;
+}
+
+.logout-icon:hover {
+  color: #6366f1;
+}
