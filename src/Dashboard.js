@@ -2,6 +2,8 @@ import React from "react";
 import "./Dashboard.css";
 import { Link } from "react-router-dom";
 import { HiOutlineLogout } from "react-icons/hi";
+import { MdLogout } from "react-icons/md";
+
 import {
   Chart as ChartJS,
   CategoryScale,
