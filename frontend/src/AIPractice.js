@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./AIPractice.css";
-import { apiChat, apiExplain, apiStudyPlan, getUser } from "./api";
+import { apiChat, apiExplain, apiStudyPlan } from "./api";
 import { Link } from "react-router-dom";
 import { HiOutlineLogout } from "react-icons/hi";
 
@@ -18,7 +18,6 @@ function AIPractice() {
   const [explainSubject, setExplainSubject] = useState("DSA");
   const [examDate, setExamDate] = useState("");
   const chatEndRef = useRef(null);
-  const user = getUser();
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });

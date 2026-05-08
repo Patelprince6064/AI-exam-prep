@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { HiOutlineLogout } from "react-icons/hi";
-import { apiGetSubjects, apiEnrollSubjects, apiGenerateQuiz, apiSubmitQuiz, clearAuth } from "./api";
+import { apiGetSubjects, apiGenerateQuiz, apiSubmitQuiz, clearAuth } from "./api";
 import "./Dashboard.css";
 
 function Subjects() {
