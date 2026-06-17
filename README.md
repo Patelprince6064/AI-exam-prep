@@ -1,70 +1,31 @@
-# Getting Started with Create React App
+# AI Exam Prep Platform
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+An intelligent, AI-driven academic preparation platform designed to help students master their subjects through personalized learning, automated quizzes, and insightful analytics.
 
-## Available Scripts
+## 🚀 Features
 
-In the project directory, you can run:
+- **AI Tutor:** Interactive chat powered by Groq AI for instant explanations on complex topics (DSA, OS, DBMS, CN, AI).
+- **PDF Upload:** Seamlessly upload lecture notes or textbooks.
+- **Quiz Generator:** Automatically extract and generate customized quizzes from your uploaded PDFs.
+- **Study Planner:** Generate a personalized day-by-day study schedule based on your exam date.
+- **Analytics Dashboard:** Visual insights into your study habits, quiz performance, and progress over time.
+- **Progress Tracking:** Monitor your consistency and hit your daily study goals.
 
-### `npm start`
+## 💻 Tech Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+**Frontend:**
+- React.js
+- Vanilla CSS (Modern, Responsive Design)
+- Chart.js (Data Visualization)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+**Backend:**
+- Node.js
+- Express.js
+- MongoDB (Database)
+- Groq AI API (LLM Integration for intelligent generation)
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 🛠️ Upcoming Features
+- **Weak Topic Intelligence:** AI detects your weak areas based on quiz scores and recommends targeted topics to study.
+- **Exam Readiness Score:** Predicts your potential exam marks with confidence metrics.
+- **Previous Year Paper Analyzer:** Upload past university papers and let AI extract the most frequently asked topics.
+- **Placement Mode:** Specialized track for coding (DSA), aptitude, and interview preparation.
