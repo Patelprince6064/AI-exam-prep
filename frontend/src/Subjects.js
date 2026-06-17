@@ -142,8 +142,29 @@ function Subjects() {
               </div>
             </div>
 
+            {result.subjectScores && result.subjectScores.length > 0 && (
+              <div className="result-subject-scores" style={{ marginTop: "32px", padding: "20px", background: "#1e293b", borderRadius: "16px", color: "#f8fafc", boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)" }}>
+                <h4 style={{ margin: "0 0 16px 0", fontSize: "16px", color: "#cbd5e1", fontWeight: "600", letterSpacing: "0.5px", textTransform: "uppercase" }}>📊 Overall Subject Performance</h4>
+                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                  {result.subjectScores.map(s => (
+                    <div key={s.subject} style={{ display: "flex", justifyContent: "space-between", background: "#0f172a", padding: "10px 16px", borderRadius: "8px", fontSize: "15px", fontWeight: "500", border: "1px solid #334155" }}>
+                      <span style={{ color: "#93c5fd" }}>{s.subject}</span> 
+                      <span>{s.score}%</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {result.feedback && (
-              <div className="result-feedback"><div className="result-feedback-label">🤖 AI Feedback</div><p>{result.feedback}</p></div>
+              <div className="result-feedback" style={{ marginTop: "24px", padding: "24px", background: "#0f172a", borderRadius: "16px", border: "1px solid #334155", color: "#f8fafc", boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}>
+                <div className="result-feedback-label" style={{ fontWeight: "700", marginBottom: "16px", color: "#818cf8", fontSize: "16px", display: "flex", alignItems: "center", gap: "8px" }}>
+                  <span style={{ fontSize: "20px" }}>🤖</span> Weak Topic Intelligence
+                </div>
+                <pre style={{ whiteSpace: "pre-wrap", fontFamily: "'Inter', sans-serif", margin: 0, lineHeight: "1.7", color: "#e2e8f0", fontSize: "15px" }}>
+                  {result.feedback}
+                </pre>
+              </div>
             )}
             <div className="result-actions">
               <button className="result-btn primary" onClick={() => { setQuiz(null); setAnswers({}); setResult(null); }}>Try Another Topic</button>

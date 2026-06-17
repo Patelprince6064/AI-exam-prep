@@ -6,6 +6,7 @@ import {
   apiGetNotes,
   apiDeleteNote,
   apiGenerateQuizFromNote,
+  apiSubmitQuiz,
   getUser,
   clearAuth,
 } from "./api";
@@ -17,6 +18,7 @@ const NAV = [
   { to: "/subjects",  icon: "📚", label: "Subjects" },
   { to: "/analytics", icon: "📊", label: "Analytics" },
   { to: "/pdf-upload",icon: "📄", label: "PDF Upload" },
+  { to: "/paper-analyzer", icon: "📝", label: "Paper Analyzer" },
   { to: "/settings",  icon: "⚙️", label: "Settings" },
 ];
 
@@ -38,6 +40,7 @@ function PdfUpload() {
   const [toast,      setToast]      = useState(null);
   const [dragOver,   setDragOver]   = useState(false);
   const [qCount,     setQCount]     = useState(5);
+  const [result,     setResult]     = useState(null);
 
   // Upload form state
   const [title,   setTitle]   = useState("");
@@ -126,6 +129,7 @@ function PdfUpload() {
     setQuestions([]);
     setAnswers({});
     setSubmitted(false);
+    setResult(null);
     setActiveNote(note);
     try {
       const data = await apiGenerateQuizFromNote(note._id, qCount);
@@ -149,7 +153,7 @@ function PdfUpload() {
     setAnswers((a) => ({ ...a, [qi]: option }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (Object.keys(answers).length < questions.length) {
       showToast("Please answer all questions first", "error");
       return;
@@ -157,6 +161,28 @@ function PdfUpload() {
     setSubmitted(true);
     const correct = questions.filter((q, i) => answers[i] === q.correctAnswer).length;
     showToast(`Score: ${correct}/${questions.length} — ${Math.round((correct/questions.length)*100)}%`);
+
+    const formattedQuestions = questions.map((q, i) => ({
+      question: q.question,
+      userAnswer: answers[i] || "",
+      correctAnswer: q.correctAnswer,
+      isCorrect: answers[i] === q.correctAnswer,
+      topic: q.topic || activeNote?.title,
+      explanation: q.explanation,
+    }));
+
+    try {
+      const data = await apiSubmitQuiz({
+        subject: activeNote?.subject || "General",
+        topic: activeNote?.title || "PDF Upload",
+        questions: formattedQuestions,
+        timeTaken: 0,
+        mode: "ai-generated"
+      });
+      setResult(data);
+    } catch {
+      showToast("Failed to save quiz results", "error");
+    }
   };
 
   const score = submitted
@@ -436,11 +462,36 @@ function PdfUpload() {
                   </div>
                   <button
                     className="quiz-retry-btn"
-                    onClick={() => { setAnswers({}); setSubmitted(false); setQuestions([]); }}
+                    onClick={() => { setAnswers({}); setSubmitted(false); setQuestions([]); setResult(null); }}
                   >
                     Try Again
                   </button>
                 </div>
+
+                {result && result.subjectScores && result.subjectScores.length > 0 && (
+                  <div className="result-subject-scores" style={{ marginTop: "32px", padding: "20px", background: "#1e293b", borderRadius: "16px", color: "#f8fafc", boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)", textAlign: "left" }}>
+                    <h4 style={{ margin: "0 0 16px 0", fontSize: "16px", color: "#cbd5e1", fontWeight: "600", letterSpacing: "0.5px", textTransform: "uppercase" }}>📊 Overall Subject Performance</h4>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                      {result.subjectScores.map(s => (
+                        <div key={s.subject} style={{ display: "flex", justifyContent: "space-between", background: "#0f172a", padding: "10px 16px", borderRadius: "8px", fontSize: "15px", fontWeight: "500", border: "1px solid #334155" }}>
+                          <span style={{ color: "#93c5fd" }}>{s.subject}</span> 
+                          <span>{s.score}%</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {result && result.feedback && (
+                  <div className="result-feedback" style={{ marginTop: "24px", padding: "24px", background: "#0f172a", borderRadius: "16px", border: "1px solid #334155", color: "#f8fafc", boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)", textAlign: "left" }}>
+                    <div className="result-feedback-label" style={{ fontWeight: "700", marginBottom: "16px", color: "#818cf8", fontSize: "16px", display: "flex", alignItems: "center", gap: "8px" }}>
+                      <span style={{ fontSize: "20px" }}>🤖</span> Weak Topic Intelligence
+                    </div>
+                    <pre style={{ whiteSpace: "pre-wrap", fontFamily: "'Inter', sans-serif", margin: 0, lineHeight: "1.7", color: "#e2e8f0", fontSize: "15px" }}>
+                      {result.feedback}
+                    </pre>
+                  </div>
+                )}
               </div>
             )}
           </div>

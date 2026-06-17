@@ -13,6 +13,7 @@ const progressRoutes = require("./routes/progress");
 const subjectRoutes = require("./routes/subjects");
 const analyticsRoutes = require("./routes/analytics");
 const userRoutes = require("./routes/user");
+const paperRoutes = require("./routes/paper");
 
 const app = express();
 
@@ -70,6 +71,7 @@ app.use("/api/progress", progressRoutes);
 app.use("/api/subjects", subjectRoutes);
 app.use("/api/analytics", analyticsRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/paper", paperRoutes);
 
 // ─── 404 Handler ─────────────────────────────────────────────────────────────
 app.use((req, res) => {

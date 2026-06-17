@@ -112,7 +112,24 @@ router.post("/submit", protect, async (req, res) => {
     user.stats.totalQuestions += questions.length;
     await user.save();
 
-    // AI feedback on performance
+    // Fetch all past quiz results to calculate subject-wise performance
+    const allResults = await QuizResult.find({ user: req.user._id });
+    const subjectStats = {};
+    allResults.forEach((r) => {
+      if (!subjectStats[r.subject]) subjectStats[r.subject] = { correct: 0, total: 0 };
+      subjectStats[r.subject].correct += r.correctAnswers;
+      subjectStats[r.subject].total += r.totalQuestions;
+    });
+
+    let subjectScoresStr = "";
+    const subjectScores = [];
+    for (const [sub, stats] of Object.entries(subjectStats)) {
+      const pct = Math.round((stats.correct / stats.total) * 100);
+      subjectScoresStr += `${sub}: ${pct}%\n`;
+      subjectScores.push({ subject: sub, score: pct });
+    }
+
+    // AI feedback on performance (Weak Topic Intelligence)
     let feedback = "";
     try {
       const feedbackRes = await fetch(GROQ_API_URL, {
@@ -127,21 +144,49 @@ router.post("/submit", protect, async (req, res) => {
           messages: [
             {
               role: "system",
-              content: "You are an encouraging AI tutor. Give brief, actionable exam feedback.",
+              content: `You are an AI Exam Prep Tutor. Provide 'Weak Topic Intelligence'.
+You MUST respond ONLY with a valid JSON object. Do not include any markdown formatting, backticks, or conversational text. Use this exact schema:
+{
+  "subject": "The main subject they are struggling with",
+  "analysis": "1-2 sentences explaining exactly what concepts they missed from the wrong topics provided.",
+  "recommended": ["Sub-topic 1", "Sub-topic 2", "Sub-topic 3"],
+  "actionable_advice": "1 specific sentence on how to practice this",
+  "study_time_hours": 3
+}`,
             },
             {
               role: "user",
-              content: `Student scored ${score}% (${correctAnswers}/${questions.length}) on a ${subject} quiz about ${topic || subject}. 
-Wrong topics: ${questions.filter((q) => !q.isCorrect).map((q) => q.topic).join(", ") || "none"}.
-Give 2-3 sentences of specific, encouraging feedback.`,
+              content: `Student's overall performance:
+${subjectScoresStr || "No past data."}
+
+The student just scored ${score}% on a ${subject} quiz.
+Their wrong answers were related to these topics: ${questions.filter((q) => !q.isCorrect).map((q) => q.topic || subject).join(", ") || "none"}.
+
+Provide the JSON feedback.`,
             },
           ],
+          response_format: { type: "json_object" }
         }),
       });
       const feedbackData = await feedbackRes.json();
-      feedback = feedbackData.choices[0].message.content;
+      const rawFeedback = feedbackData.choices[0].message.content;
+      const parsed = JSON.parse(rawFeedback);
+      
+      feedback = `You are struggling with ${parsed.subject}.
+
+Detailed Analysis:
+${parsed.analysis}
+
+Recommended Topics to Master:
+${parsed.recommended.map(t => `- ${t}`).join('\n')}
+
+Actionable Advice:
+${parsed.actionable_advice}
+
+Study Time:
+${parsed.study_time_hours} hours this week`;
     } catch (e) {
-      feedback = `You scored ${score}%. Keep practicing!`;
+      feedback = `You scored ${score}%. Review the topics you missed and keep practicing!`;
     }
 
     res.json({
@@ -155,6 +200,7 @@ Give 2-3 sentences of specific, encouraging feedback.`,
         subject,
         topic,
       },
+      subjectScores,
       feedback,
       updatedStats: user.stats,
     });

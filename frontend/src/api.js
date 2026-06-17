@@ -153,6 +153,13 @@ export const apiGenerateQuizFromNote = (noteId, count = 5) =>
     body: JSON.stringify({ count }),
   }).then((r) => r.json());
 
+export const apiAnalyzePaper = (formData) =>
+  fetch(`${BASE_URL}/api/paper/analyze`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${getToken()}` }, // no Content-Type for multipart
+    body: formData,
+  }).then((r) => r.json());
+
 // ─── Auth helpers ─────────────────────────────────────────────────────────────
 export const saveAuth = (token, user) => {
   localStorage.setItem("token", token);

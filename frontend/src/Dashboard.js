@@ -19,6 +19,7 @@ const NAV = [
   { to: "/subjects",   icon: "📚", label: "Subjects" },
   { to: "/analytics",  icon: "📊", label: "Analytics" },
   { to: "/pdf-upload", icon: "📄", label: "PDF Upload" },
+  { to: "/paper-analyzer", icon: "📝", label: "Paper Analyzer" },
   { to: "/settings",   icon: "⚙️", label: "Settings" },
 ];
 
