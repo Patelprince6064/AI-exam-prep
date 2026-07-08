@@ -52,6 +52,13 @@ export const apiStudyPlan = (startDate, examDate, weakTopics) =>
     body: JSON.stringify({ startDate, examDate, weakTopics }),
   }).then((r) => r.json());
 
+export const apiGenerateRoadmap = (skill) =>
+  fetch(`${BASE_URL}/chat/roadmap`, {
+    method: "POST",
+    headers: headers(),
+    body: JSON.stringify({ skill }),
+  }).then((r) => r.json());
+
 // ─── Quiz ────────────────────────────────────────────────────────────────────
 export const apiGenerateQuiz = (subject, topic, count = 5, difficulty = "medium") =>
   fetch(`${BASE_URL}/api/quiz/generate`, {

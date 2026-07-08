@@ -12,6 +12,7 @@ import Analytics from "./Analytics";
 import Settings from "./Settings";
 import PdfUpload from "./PdfUpload";
 import PaperAnalyzer from "./PaperAnalyzer";
+import Roadmap from "./Roadmap";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
       <Route path="/settings"   element={<Settings />} />
       <Route path="/pdf-upload" element={<PdfUpload />} />
       <Route path="/paper-analyzer" element={<PaperAnalyzer />} />
+      <Route path="/roadmap" element={<Roadmap />} />
 
       <Route path="/" element={<Home />} />
     </Routes>

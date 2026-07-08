@@ -149,4 +149,67 @@ Provide a day-by-day study plan from the start date to the exam date with topics
   }
 });
 
+// ─── POST /chat/roadmap ────────────────────────────────────────────────────────
+// Generate a step-by-step learning roadmap for a skill
+router.post("/roadmap", protect, async (req, res) => {
+  try {
+    const { skill } = req.body;
+    if (!skill) {
+      return res.status(400).json({ message: "Skill is required ❌" });
+    }
+
+    const response = await fetch(GROQ_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: GROQ_MODEL,
+        max_tokens: 2500,
+        temperature: 0.3,
+        messages: [
+          {
+            role: "system",
+            content: "You are an expert learning path advisor. You create highly structured, end-to-end roadmaps for learning new skills. You MUST respond ONLY with valid JSON. Do not include markdown tags like ```json or any other explanatory text.",
+          },
+          {
+            role: "user",
+            content: `Generate a comprehensive, end-to-end learning roadmap for the skill: "${skill}". 
+The roadmap should be brief in descriptions but exhaustively cover ALL essential topics needed to master this skill from beginner to advanced level.
+Return the response strictly as a JSON array of objects, where each object represents a distinct phase or step.
+Each object must have these exact keys:
+- "step": integer (e.g. 1, 2)
+- "title": string (phase title)
+- "description": string (brief description of the goal for this phase)
+- "topics": array of strings (comprehensive list of specific concepts, tools, or subjects to learn in this phase)
+Example: [{"step": 1, "title": "Basics", "description": "Learn the fundamentals", "topics": ["Variables", "Loops"]}]`,
+          },
+        ],
+      }),
+    });
+
+    if (!response.ok) {
+       console.error("Groq API error:", await response.text());
+       return res.status(502).json({ message: "AI service error. Try again ❌" });
+    }
+
+    const data = await response.json();
+    let content = data.choices[0].message.content.trim();
+    
+    // Strip markdown json blocks if LLM still includes them
+    if (content.startsWith("```json")) {
+       content = content.replace(/^```json/, "").replace(/```$/, "").trim();
+    } else if (content.startsWith("```")) {
+       content = content.replace(/^```/, "").replace(/```$/, "").trim();
+    }
+
+    const roadmapData = JSON.parse(content);
+    res.json({ roadmap: roadmapData });
+  } catch (error) {
+    console.error("Roadmap generation error:", error);
+    res.status(500).json({ message: "Failed to generate roadmap ❌" });
+  }
+});
+
 module.exports = router;
